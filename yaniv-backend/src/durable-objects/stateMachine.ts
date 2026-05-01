@@ -149,6 +149,9 @@ export function resetTableState(
 
   return {
     ...state,
+    // Normalize resetScoreAt — old DOs may have been created with a wrong
+    // value (scoreLimit/2) before the DEFAULTS.RESET_SCORE_AT fix.
+    settings: { ...state.settings, resetScoreAt: DEFAULTS.RESET_SCORE_AT },
     requiresManualStart: false,
     phase: 'waiting_for_players',
     players,
