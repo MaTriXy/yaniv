@@ -81,12 +81,12 @@ export function handTotal(hand: CardId[]): number {
 
 /**
  * 2-4 cards of the same rank (jokers act as wild rank-matcher).
- * At least 1 non-joker required to anchor the rank.
+ * The two physical jokers may also be discarded together.
  */
 function isValidSameRankSet(cards: CardId[]): boolean {
   if (cards.length < 2 || cards.length > 4) return false;
   const nonJokers = cards.filter((c) => !isJoker(c));
-  if (nonJokers.length === 0) return false;
+  if (nonJokers.length === 0) return cards.length === 2;
   const baseRank = parseCard(nonJokers[0]).rank;
   return nonJokers.every((c) => parseCard(c).rank === baseRank);
 }

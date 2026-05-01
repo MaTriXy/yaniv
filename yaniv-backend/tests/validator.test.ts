@@ -117,4 +117,18 @@ describe('validator current turn guards', () => {
       code: ErrorCode.INVALID_MOVE,
     });
   });
+
+  it('allows discarding both jokers together', () => {
+    const state = makeState({
+      players: {
+        p1: {
+          ...makeState().players.p1,
+          hand: ['JK1', 'JK2', '5H'],
+        },
+        p2: makeState().players.p2,
+      },
+    });
+
+    expect(validateDiscard('p1', ['JK1', 'JK2'], state)).toEqual({ valid: true });
+  });
 });

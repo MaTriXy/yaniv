@@ -1682,15 +1682,16 @@ export class GameTable implements DurableObject {
   }
 
   /**
-   * If the current turn player has 0 cards at the start of their discard turn
-   * (possible after accepting a הדבקה that emptied their hand), automatically
-   * call Yaniv on their behalf. Returns true if Yaniv was resolved.
+   * If the current turn player has 0 cards at the start of their discard turn,
+   * automatically call Yaniv on their behalf. This intentionally waits until
+   * the zero-card player becomes the current turn player.
    */
   private async maybeAutoYanivForCurrentPlayer(state: GameState): Promise<boolean> {
     if (state.phase !== 'player_turn_discard') return false;
     const playerId = this.getCurrentTurnPlayerId(state);
     if (!playerId) return false;
-    if (state.players[playerId].hand.length !== 0) return false;
+    const player = state.players[playerId];
+    if (!player || player.hand.length !== 0) return false;
     await this.resolveYanivRound(playerId, state);
     return true;
   }

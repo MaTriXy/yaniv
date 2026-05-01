@@ -42,7 +42,7 @@ function rankOrder(rank: string): number {
 function isValidSameRankSet(cards: CardId[]): boolean {
   if (cards.length < 2 || cards.length > 4) return false;
   const nonJokers = cards.filter((c) => !isJoker(c));
-  if (nonJokers.length === 0) return false;
+  if (nonJokers.length === 0) return cards.length === 2;
   const base = parseCard(nonJokers[0]).rank;
   return nonJokers.every((c) => parseCard(c).rank === base);
 }
